@@ -22,6 +22,12 @@ app.use(
     credentials: true,
   })
 );
+//cors
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
 
 // Using routes
 app.use("/api/v1/users", userRouter);
