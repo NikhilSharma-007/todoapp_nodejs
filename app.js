@@ -15,9 +15,11 @@ config({
 // Using Middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+// CORS configuration
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: process.env.FRONTEND_URL || "https://todoapp-react-psi.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
