@@ -13,10 +13,26 @@ config({
 });
 
 const corsOptions = {
-  origin: "https://todoapp-react-psi.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://todoapp-react-psi.vercel.app",
+      "http://localhost:3000",
+    ];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
 };
 
 // Enable pre-flight requests for all routes
@@ -31,6 +47,7 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   console.log(`Received ${req.method} request for ${req.url}`);
   console.log("Origin:", req.get("Origin"));
+  console.log("Headers:", req.headers);
   next();
 });
 
