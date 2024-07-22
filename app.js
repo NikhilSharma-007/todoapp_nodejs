@@ -16,14 +16,22 @@ config({
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS configuration
+// Updated CORS configuration
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://todoapp-react-psi.vercel.app/",
+    origin: "https://todoapp-react-psi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Log all requests for debugging
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  console.log("Origin:", req.get("Origin"));
+  next();
+});
 
 // Using routes
 app.use("/api/v1/users", userRouter);
