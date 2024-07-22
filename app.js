@@ -12,19 +12,20 @@ config({
   path: "./data/config.env",
 });
 
+const corsOptions = {
+  origin: "https://todoapp-react-psi.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Enable pre-flight requests for all routes
+app.options("*", cors(corsOptions));
+
 // Using Middlewares
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-
-// Updated CORS configuration
-app.use(
-  cors({
-    origin: "https://todoapp-react-psi.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
 
 // Log all requests for debugging
 app.use((req, res, next) => {
