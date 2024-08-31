@@ -16,10 +16,24 @@ config({
 app.use(express.json());
 app.use(cookieParser());
 
-// Updated CORS configuration
+// Precise CORS configuration
+const allowedOrigins = [
+  "https://todoapp-react-psi.vercel.app",
+  "https://todoapp-react-psi.vercel.app/", // Notice the trailing slash
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: [
@@ -31,15 +45,6 @@ app.use(
     ],
   })
 );
-
-// Remove the old custom CORS middleware
-// app.use(function (req, res, next) {
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
 
 // Using routes
 app.use("/api/v1/users", userRouter);
