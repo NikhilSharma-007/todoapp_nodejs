@@ -18,8 +18,8 @@ app.use(cookieParser());
 
 // Precise CORS configuration
 const allowedOrigins = [
-  "https://todoapp-react-psi.vercel.app",
-  "https://todoapp-react-psi.vercel.app/", // Notice the trailing slash
+  "https://todoapp-react-xi.vercel.app",
+  "https://todoapp-react-xi.vercel.app/", // Notice the trailing slash
   "http://localhost:5173",
   "http://localhost:5173/",
 ];
